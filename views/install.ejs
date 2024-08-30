@@ -1,0 +1,74 @@
+<form method="post" action="/install/<%= step %>">
+    <% if (step == 1) { %>
+        <h3 class="mt-3 mb-3">Création du compte Administrateur</h3>
+
+        <div class="mb-3">
+            <label for="pseudo" class="form-label">Pseudo</label>
+            <input
+                type="text"
+                class="form-control"
+                name="pseudo"
+                id="pseudo"
+            />
+        </div>
+        
+        <div class="mb-3">
+            <label for="password" class="form-label">Mot de passe</label>
+            <input
+                type="password"
+                class="form-control"
+                name="password"
+                id="password"
+            />
+        </div>
+    <% } else if (step == 2) { %>
+        <h3 class="mt-3 mb-3">Enregistrement de votre premier site</h3>
+        
+        <div class="mb-3">
+            <label for="name" class="form-label">Nom</label>
+            <input
+                type="text"
+                class="form-control"
+                name="name"
+                id="name"
+            />
+        </div>
+        
+        <div class="mb-3">
+            <label for="domain" class="form-label">Domaine</label>
+            <input
+                type="text"
+                class="form-control"
+                name="domain"
+                id="domain"
+                placeholder="google.com"
+            />
+        </div>
+        
+        <div class="mb-3">
+            <label for="interval" class="form-label">Intervalle de vérification (en secondes)</label>
+            <input
+                type="number"
+                class="form-control"
+                name="interval"
+                id="interval"
+                placeholder="5"
+            />
+        </div>
+        
+        <div class="mb-3">
+            <label for="maxTimeoutTime" class="form-label">Temps minimum avant alerte (en secondes)</label>
+            <input
+                type="number"
+                class="form-control"
+                name="maxTimeoutTime"
+                id="maxTimeoutTime"
+                placeholder="5"
+            />
+        </div>
+    <% } %>
+
+    <div class="mt-3 row justify-content-center">
+        <button class="btn btn-success">Envoyer</button>
+    </div>
+</form>
