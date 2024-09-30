@@ -46,6 +46,6 @@ export default class UserController {
             return;
         }
 
-        response.render("login", { title: "Connexion", noNavbar: true });
+        response.render("users/login", { title: "Connexion", noNavbar: true });
     }
 }

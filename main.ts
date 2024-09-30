@@ -50,7 +50,7 @@ declare module "express-session" {
     app.use(express.static("public"));
     app.use(expressEjsLayouts);
 
-    app.set("layout", "layout");
+    app.set("layout", "layouts/layout");
     app.set("view engine", "ejs");
 
     // SESSION CONFIGURATION //

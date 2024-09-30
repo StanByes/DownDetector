@@ -7,6 +7,6 @@ export default class PageController {
     }
 
     private async home(request: Request, response: Response, next: NextFunction) {
-        return response.render("home", { title: "Accueil", websites });
+        return response.render("pages/home", { title: "Accueil", websites });
     }
 }

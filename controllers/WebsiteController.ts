@@ -20,6 +20,6 @@ export default class WebsiteController {
             });
         }
 
-        response.render("website", { title: "Site", website });
+        response.render("websites/show", { title: "Site", website });
     }
 }
