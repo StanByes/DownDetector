@@ -3,13 +3,15 @@ import User from "../class/User";
 import Website, { Status } from "../class/Website";
 import WebsiteHistory from "../class/WebsiteHistory";
 import { collections } from "./db";
+import WebsiteNotification from "../class/WebsiteNotification";
 
 let users: WithId<User>[] = [];
 let websites: WithId<Website>[] = [];
 let websitesHistories: WithId<WebsiteHistory>[] = [];
+let websitesNotifications: WithId<WebsiteNotification>[] = [];
 
 export {
-    users, websites, websitesHistories,
+    users, websites, websitesHistories, websitesNotifications
 }
 
 export async function load() {
@@ -32,6 +34,13 @@ export async function load() {
                 else
                     website.status = Status.UP;
             }
+
+            const websiteNotifications = await collections.website_notification?.find({ websiteId: website._id })
+                .sort("createdAt", "desc")
+                .toArray();
+
+            if (websiteNotifications != undefined)
+                website.notifications = websiteNotifications;
 
             websites.push(website);
         }

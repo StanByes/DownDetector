@@ -1,0 +1,70 @@
+<div class="card mt-2">
+    <div class="card-header d-flex justify-content-between">
+        <h2 class="ms-1"><%= website.name %></h2>
+        <div class="d-flex align-items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="<%= website.status == 0 ? 'green' : 'red' %>" class="bi bi-circle-fill" viewBox="0 0 25 25">
+                <circle cx="8" cy="8" r="8"/>
+            </svg>
+            <h4 class="ms-1 text-<%= website.status == 0 ? 'success' : 'danger' %>"><%= formatStatus(website.status).toUpperCase() %></h3>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <h4>Historique d'activités</h4>
+        <table class="table mt-4 mb-4">
+            <thead>
+                <th>#</th>
+                <th>Status</th>
+                <th>Date</th>
+            </thead>
+            <tbody>
+                <% for (let i = 0; i < website.history.length; i++) { 
+                    let history = website.history[i];
+                    %>
+                    <tr>
+                        <td><%= i %></td>
+                        <td><%= formatStatus(history.status) %></td>
+                        <td><%= formatDate(history.createdAt) %></td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+
+        <hr>
+
+        <div class="mt-4 d-flex justify-content-between">
+            <h4>Paramètres de notifications</h4>
+            <a class="btn btn-primary" href="/websites/<%= website._id%>/notifications">Configurer une nouvelle notification</a>
+        </div>
+        <table class="mt-4 table">
+            <thead>
+                <th>#</th>
+                <th>Nom</th>
+                <th>Description</th>
+                <th>Type</th>
+                <th>Créateur</th>
+                <th>Date de création</th>
+                <th>Actions</th>
+            </thead>
+            <tbody>
+                <% for (let i = 0; i < website.notifications.length; i++) {
+                    let notification = website.notifications[i];
+                    let creator = findUser(notification.creatorId);
+                    %>
+                    <tr>
+                        <td><%= i %></td>
+                        <td><%= notification.name %></td>
+                        <td><%= notification.description %></td>
+                        <td><%= formatNotificationType(notification.type) %></td>
+                        <td><%= creator ? creator.pseudo : "Inconnu" %></td>
+                        <td><%= formatDate(notification.createdAt) %></td>
+                        <td>
+                            <a class="btn btn-success">Modifier</a>
+                            <button class="btn btn-danger">Supprimer</button>    
+                        </td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+</div>

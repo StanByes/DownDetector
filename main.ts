@@ -7,11 +7,12 @@ import InstallController from "./controllers/InstallController";
 import User from "./class/User";
 import session from "express-session";
 import UserController from "./controllers/UserController";
-import locals from "./middlewares/locals";
+import helpers from "./middlewares/helpers";
 import PageController from "./controllers/PageController";
 import { registerCheckWebsites } from "./tasks/checkWebsite";
 import { load } from "./database/cache";
 import WebsiteController from "./controllers/WebsiteController";
+import { WithId } from "mongodb";
 
 declare module "express-session" {
 
@@ -20,7 +21,7 @@ declare module "express-session" {
             error: boolean,
             message: string
         } | null,
-        user: User
+        user: WithId<User>
     }
 }
 
@@ -57,9 +58,9 @@ declare module "express-session" {
     app.use(session({secret: "DN[o:7X%31.8", resave: true, saveUninitialized: false, cookie: { secure: process.env.NODE_ENV == "production" }}));
 
     // MIDDLEWARES //
-    app.use(locals);
+    app.use(helpers);
     app.use(install);
-    //app.use(auth);
+    app.use(auth);
 
     // CONTROLLERS //
     new InstallController(app);

@@ -3,6 +3,7 @@ import { up } from "migrate-mongo";
 import Website from "../class/Website";
 import WebsiteHistory from "../class/WebsiteHistory";
 import User from "../class/User";
+import WebsiteNotification from "../class/WebsiteNotification";
 
 const client = new MongoClient("mongodb+srv://stanbyes:1234@data.mpaci.mongodb.net/down_detector?retryWrites=true&w=majority&appName=Data", {
     serverApi: {
@@ -16,6 +17,7 @@ export const collections: {
     user?: Collection<User>
     website?: Collection<Website>
     website_history?: Collection<WebsiteHistory>
+    website_notification?: Collection<WebsiteNotification>
 } = {};
 
 export async function connect() {
@@ -28,6 +30,7 @@ export async function connect() {
     collections.user = db.collection("user");
     collections.website = db.collection("website");
     collections.website_history = db.collection("website_history");
+    collections.website_notification = db.collection("website_notification");
 }
 
 export async function runMigrations() {
