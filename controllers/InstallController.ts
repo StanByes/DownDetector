@@ -4,6 +4,7 @@ import { collections } from "../database/db";
 import User, { Role } from "../class/User";
 import { isNullOrEmpty } from "../utils";
 import Website, { Status } from "../class/Website";
+import FlashHelper from "../helpers/FlashHelper";
 
 export default class InstallController {
     constructor (app: Application) {
@@ -23,18 +24,11 @@ export default class InstallController {
 
         if (request.params.step == "1") {
             if (isNullOrEmpty(request.body.pseudo) || isNullOrEmpty(request.body.password)) {
-                return response.status(400).json({
-                    message: "Bad request"
-                });
+                FlashHelper.error(request, "Tous les champs doivent être remplis");
+                return response.redirect("/");
             }
 
             const pseudo = request.body.pseudo;
-            if (await collections.user?.findOne({ pseudo }) != null) {
-                return response.status(400).json({
-                    message: "Pseudo already used"
-                });
-            }
-
             const password = await hash(request.body.password, 10);
             await collections.user?.insertOne(new User(pseudo, password, Role.OWNER, new Date()));
 
@@ -42,23 +36,15 @@ export default class InstallController {
         } else if (request.params.step == "2") {
             const body = request.body;
             if (isNullOrEmpty(body.name) || isNullOrEmpty(body.domain) || isNullOrEmpty(body.interval) || isNullOrEmpty(body.maxTimeoutTime)) {
-                return response.status(400).json({
-                    message: "Bad request"
-                });
+                FlashHelper.error(request, "Tous les champs doivent être remplis");
+                return response.redirect("/");
             }
 
             const name = body.name;
-            if (await collections.website?.findOne({ name }) != null) {
-                return response.status(400).json({
-                    message: "Name already used"
-                });
-            }
-
             const { interval, maxTimeoutTime } = body;
             if (Number.isNaN(interval) || Number.isNaN(maxTimeoutTime)) {
-                return response.status(400).json({
-                    message: "Interval or max timeout time values are not numbers"
-                });
+                FlashHelper.error(request, "Les valeurs de l'interval et du temps de timeout maximum doivent être numériques");
+                return response.redirect("/");
             }
 
             await collections.website?.insertOne(new Website(name, body.domain, parseInt(interval), parseInt(maxTimeoutTime), Status.UP));

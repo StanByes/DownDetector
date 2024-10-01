@@ -59,9 +59,9 @@ declare module "express-session" {
     app.use(session({secret: "DN[o:7X%31.8", resave: true, saveUninitialized: false, cookie: { secure: process.env.NODE_ENV == "production" }}));
 
     // MIDDLEWARES //
+    app.use(auth);
     app.use(helpers);
     app.use(install);
-    app.use(auth);
 
     // CONTROLLERS //
     new InstallController(app);

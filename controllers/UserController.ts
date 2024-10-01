@@ -2,6 +2,7 @@ import { Application, NextFunction, Request, Response } from "express";
 import { isNullOrEmpty } from "../utils";
 import { collections } from "../database/db";
 import { compareSync } from "bcrypt";
+import FlashHelper from "../helpers/FlashHelper";
 
 export default class UserController {
     constructor(app: Application) {
@@ -16,9 +17,8 @@ export default class UserController {
 
         if (request.method == "POST") {
             if (isNullOrEmpty(request.body.pseudo) || isNullOrEmpty(request.body.password)) {
-                return response.status(400).json({
-                    message: "Bad request"
-                });
+                FlashHelper.error(request, "Tous les champs doivent être remplis");
+                return response.redirect("/");
             }
 
             const pseudo = request.body.pseudo;
@@ -26,15 +26,13 @@ export default class UserController {
             
             const user = await collections.user!.findOne({pseudo});
             if (!user) {
-                return response.status(404).json({
-                    message: "Unknown user"
-                });
+                FlashHelper.warning(request, "Ce compte n'existe pas. Merci de vous adresser à l'administrateur du site.");
+                return response.redirect("/login");
             }
 
             if (!compareSync(rawPass, user.password)) {
-                return response.status(401).json({
-                    message: "Bad password"
-                });
+                FlashHelper.error(request, "Mot de passe incorrect");
+                return response.redirect("/login");
             }
 
             request.session.user = user;

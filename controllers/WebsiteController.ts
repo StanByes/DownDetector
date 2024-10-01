@@ -3,6 +3,7 @@ import { websites } from "../database/cache";
 import { isNullOrEmpty } from "../utils";
 import WebsiteNotification, { NotificationType } from "../class/WebsiteNotification";
 import { collections } from "../database/db";
+import FlashHelper from "../helpers/FlashHelper";
 
 export default class WebsiteController {
     constructor(app: Application) {
@@ -39,25 +40,21 @@ export default class WebsiteController {
             const { name, description, type, webhook_url, webhook_token, email } = request.body;
 
             if (isNullOrEmpty(name) || isNullOrEmpty(description) || isNullOrEmpty(type)) {
-                return response.status(400).json({
-                    message: "Bad request"
-                });
+                FlashHelper.error(request, "Tous les champs doivent être remplis");
+                return response.redirect(`/websites/${request.params.id}/notifications`);
             }
 
             if (website.notifications.find(n => n.name == name) != undefined) {
-                return response.status(409).json({
-                    message: "Name already used"
-                });
+                FlashHelper.error(request, "Ce nom de notification est déjà enregistré");
+                return response.redirect(`/websites/${request.params.id}/notifications`);
             }
 
             if (type == NotificationType.MAIL && isNullOrEmpty(email)) {
-                return response.status(400).json({
-                    message: "Bad request"
-                });
+                FlashHelper.error(request, "Une adresse email doit être fournie");
+                return response.redirect(`/websites/${request.params.id}/notifications`);
             } else if (type == NotificationType.WEBHOOK && (isNullOrEmpty(webhook_token) || isNullOrEmpty(webhook_url))) {
-                return response.status(400).json({
-                    message: "Bad request"
-                });
+                FlashHelper.error(request, "L'URL et le token du Webhook doivent être fournis");
+                return response.redirect(`/websites/${request.params.id}/notifications`);
             }
 
             const notification = new WebsiteNotification(website._id, name, description, type, type == NotificationType.MAIL ? email : {
