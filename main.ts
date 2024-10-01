@@ -13,12 +13,13 @@ import { registerCheckWebsites } from "./tasks/checkWebsite";
 import { load } from "./database/cache";
 import WebsiteController from "./controllers/WebsiteController";
 import { WithId } from "mongodb";
+import { FlashMessageColor } from "./helpers/FlashHelper";
 
 declare module "express-session" {
 
     interface SessionData {
         flash: {
-            error: boolean,
+            color: FlashMessageColor,
             message: string
         } | null,
         user: WithId<User>

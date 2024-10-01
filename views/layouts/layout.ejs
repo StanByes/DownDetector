@@ -79,6 +79,14 @@
             <% } %>
             <main>
                 <div class="container-fluid">
+                    <% if (flash != null) { %>
+                        <div id="flash" class="bg-<%= flash.color %> rounded-2 mt-4 position-absolute top-0 w-75" style="left: 12.5%; opacity: 1">
+                            <h4 class="text-white text-center"><%= flash.message %></h4>
+                        </div>
+
+                        <script src="/js/flash.js"></script>
+                    <% } %>
+
                     <%- body %>
                 </div>
             </main>
