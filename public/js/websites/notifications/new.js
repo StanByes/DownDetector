@@ -1,10 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const webhookInfos = new bootstrap.Collapse(document.getElementById("webhook_info"));
-    const mailInfos = new bootstrap.Collapse(document.getElementById("mail_info"), {
-        toggle: false
-    });
-
     const choices = document.querySelectorAll("input[name='type']");
+    
+    const webhookInfos = new bootstrap.Collapse(document.getElementById("webhook_info"), {
+        toggle: choices[0].checked
+    });
+    const mailInfos = new bootstrap.Collapse(document.getElementById("mail_info"), {
+        toggle: choices[1].checked
+    });
 
     function updateCollapse(choice) {
         if (choice.id == "mail") {
@@ -17,5 +19,5 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     choices.forEach(choice => choice.addEventListener("change", () => updateCollapse(choice)));
-    updateCollapse(choices[0]);
+    updateCollapse(choices[0].checked ? choices[0] : choices[1]);
 });

@@ -3,7 +3,7 @@ import User from "../class/User";
 import Website, { Status } from "../class/Website";
 import WebsiteHistory from "../class/WebsiteHistory";
 import { collections } from "./db";
-import WebsiteNotification from "../class/WebsiteNotification";
+import WebsiteNotification, { EntryStatus } from "../class/WebsiteNotification";
 
 let users: WithId<User>[] = [];
 let websites: WithId<Website>[] = [];
@@ -35,12 +35,14 @@ export async function load() {
                     website.status = Status.UP;
             }
 
-            const websiteNotifications = await collections.website_notification?.find({ websiteId: website._id })
+            const websiteNotifications = await collections.website_notification?.find({ websiteId: website._id, entryStatus: EntryStatus.ACTIVE })
                 .sort("createdAt", "desc")
                 .toArray();
 
-            if (websiteNotifications != undefined)
+            if (websiteNotifications != undefined) {
                 website.notifications = websiteNotifications;
+                websitesNotifications = websiteNotifications.concat(websiteNotifications);
+            }
 
             websites.push(website);
         }

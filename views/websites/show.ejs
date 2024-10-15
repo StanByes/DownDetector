@@ -48,8 +48,8 @@
             </thead>
             <tbody>
                 <% for (let i = 0; i < website.notifications.length; i++) {
-                    let notification = website.notifications[i];
-                    let creator = findUser(notification.creatorId);
+                    const notification = website.notifications[i];
+                    const creator = findUser(notification.creatorId);
                     %>
                     <tr>
                         <td><%= i %></td>
@@ -59,8 +59,8 @@
                         <td><%= creator ? creator.pseudo : "Inconnu" %></td>
                         <td><%= formatDate(notification.createdAt) %></td>
                         <td>
-                            <a class="btn btn-success">Modifier</a>
-                            <button class="btn btn-danger">Supprimer</button>    
+                            <a class="btn btn-success" href="/websites/<%= website._id %>/notifications/<%= notification._id %>/edit">Modifier</a>
+                            <a class="btn btn-danger"  href="/websites/<%= website._id %>/notifications/<%= notification._id %>/delete">Supprimer</a>    
                         </td>
                     </tr>
                 <% } %>

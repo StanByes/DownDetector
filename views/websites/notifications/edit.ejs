@@ -1,0 +1,57 @@
+<div class="card mt-2">
+    <div class="card-header">
+        <h4>Configuration d'une notification</h4>
+    </div>
+
+    <div class="card-body">
+        <form method="post">
+            <div class="mb-3">
+                <label for="name" class="form-label">Nom</label>
+                <input id="name" name="name" type="text" class="form-control" value="<%= notification.name %>">
+            </div>
+            
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <input id="description" name="description" type="text" class="form-control" value="<%= notification.description %>">
+            </div>
+            
+            <div class="mb-3">
+                <p class="form-label">Type</p>
+                <div class="form-check form-check-inline">
+                    <input type="radio" id="webhook" name="type" value="0" class="form-check-input" <%= notification.type == "0" ? "checked" : "" %>>
+                    <label for="webhook" class="form-check-label">Webhook</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input type="radio" id="mail" name="type" value="1" class="form-check-input" <%= notification.type == "1" ? "checked" : "" %>>
+                    <label for="mail" class="form-check-label">Mail</label>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <div class="collapse ms-3" id="webhook_info">
+                    <div class="mb-3">
+                        <label for="webhook_url" class="form-label">URL du Webhook</label>
+                        <input id="webhook_url" type="url" name="webhook_url" class="form-control" value="<%= notification.type == '0' ? notification.data.url : '' %>">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="webhook_token" class="form-label">Token du Webhook</label>
+                        <input id="webhook_token" type="text" name="webhook_token" class="form-control" value="<%= notification.type == '0' ? notification.data.token : '' %>">
+                    </div>
+                </div>
+                <div class="collapse ms-3" id="mail_info">
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" name="email" id="email" class="form-control" value="<%= notification.type == '1' ? notification.data : '' %>">
+                    </div>
+                </div>
+
+                <div class="mb-5">
+                    <button class="btn btn-success w-100">Envoyer</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="/js/websites/notifications/new.js"></script>
